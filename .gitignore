@@ -8,7 +8,7 @@ yarn-error.log*
 dist/
 build/
 out/
-
+TextEditorBlink-v1.0.0-win64/
 # Distribution files
 *.zip
 *.tar.gz
