@@ -9,6 +9,12 @@ dist/
 build/
 out/
 
+# Distribution files
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
 # Electron-specific
 *.app
 *.dmg
