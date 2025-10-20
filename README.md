@@ -56,12 +56,23 @@ A powerful, elegant text editor designed specifically for story writing with adv
 
 ## 🚀 Installation & Development
 
-### **For Users (Quick Start)**
-1. Download the latest release
-2. Extract the folder
-3. Run `TextEditorBlink.exe`
+### **📥 For Users - Easy Install**
+1. **Download**: Go to [Releases](https://github.com/NickahlisKopel/TextEditorBlink/releases)
+2. **Extract**: Download and unzip `TextEditorBlink-v1.0.0-win64.zip`
+3. **Run**: Double-click `TextEditorBlink.exe`
+4. **Start Writing**: Begin your story immediately!
 
-### **For Developers**
+### **🔨 Build It Yourself**
+Don't want to download? Build your own executable:
+```bash
+git clone https://github.com/NickahlisKopel/TextEditorBlink.git
+cd TextEditorBlink
+npm install
+npm run package
+```
+Your executable will be in: `dist/TextEditorBlink-win32-x64/TextEditorBlink.exe`
+
+### **👩‍💻 For Developers**
 ```bash
 # Clone and setup
 git clone <repository-url>
