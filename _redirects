@@ -1,0 +1,8 @@
+# Netlify Deployment
+
+This file tells Netlify how to build and deploy the mobile web app.
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
