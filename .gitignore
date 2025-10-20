@@ -14,6 +14,8 @@ out/
 *.tar.gz
 *.rar
 *.7z
+TextEditorBlink-v1.0.0-win64
+TextEditorBlink-v1.0.0-win64.zip
 
 # Electron-specific
 *.app
