@@ -1,0 +1,101 @@
+/* Copy the styles from the main app but with mobile optimizations */
+@import url('../src/styles.css');
+
+/* Mobile-specific overrides */
+.app-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-left h1 {
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.header-right {
+    display: flex;
+    gap: 5px;
+}
+
+.main-content {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.sidebar {
+    width: 300px;
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 60px;
+        height: calc(100vh - 60px);
+        width: 280px;
+        background: var(--bg-primary);
+        border-right: 1px solid var(--border-color);
+        z-index: 99;
+        transform: translateX(-100%);
+    }
+    
+    .sidebar.open {
+        transform: translateX(0);
+    }
+    
+    .editor-container {
+        width: 100%;
+        margin-left: 0;
+    }
+    
+    .header-left h1 {
+        font-size: 1rem;
+    }
+    
+    .btn {
+        padding: 6px 10px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Touch-friendly buttons */
+.btn {
+    min-height: 44px;
+    touch-action: manipulation;
+}
+
+/* Better mobile text editing */
+.text-editor {
+    font-size: 16px; /* Prevents zoom on iOS */
+    resize: none;
+}
+
+/* Mobile keyboard adjustments */
+@media (max-height: 500px) {
+    .editor-footer {
+        display: none;
+    }
+}

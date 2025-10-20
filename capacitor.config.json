@@ -1,0 +1,18 @@
+{
+  "appId": "com.texteditor.blink",
+  "appName": "texteditor-blink",
+  "webDir": "mobile",
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2000,
+      "backgroundColor": "#2C3E50",
+      "showSpinner": false
+    },
+    "StatusBar": {
+      "style": "DARK"
+    }
+  }
+}
