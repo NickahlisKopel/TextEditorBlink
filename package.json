@@ -22,7 +22,11 @@
     "cap:open:android": "cap open android",
     "mobile:build": "cap copy && cap sync",
     "mobile:android": "cap copy && cap sync && cap open android",
-    "mobile:ios": "cap copy && cap sync && cap open ios"
+    "mobile:ios": "cap copy && cap sync && cap open ios",
+    "web:serve": "python -m http.server 8080 --directory mobile",
+    "web:deploy:netlify": "netlify deploy --prod --dir=mobile",
+    "web:deploy:vercel": "vercel --prod mobile",
+    "web:deploy:firebase": "firebase deploy"
   },
   "keywords": [
     "text-editor",
