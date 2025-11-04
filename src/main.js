@@ -15,7 +15,8 @@ function createWindow() {
       nodeIntegration: false,
       contextIsolation: true,
       enableRemoteModule: false,
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'preload.js'),
+      spellcheck: true
     },
     icon: path.join(__dirname, '../assets/icon.png'),
     show: false
@@ -27,6 +28,43 @@ function createWindow() {
   // Show window when ready to prevent visual flash
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();
+  });
+
+  // Enable spell checker context menu
+  mainWindow.webContents.on('context-menu', (event, params) => {
+    const { selectionText, misspelledWord, dictionarySuggestions } = params;
+    
+    if (misspelledWord) {
+      const menu = Menu.buildFromTemplate([
+        // Add spelling suggestions
+        ...dictionarySuggestions.slice(0, 5).map(suggestion => ({
+          label: suggestion,
+          click: () => mainWindow.webContents.replaceMisspelling(suggestion)
+        })),
+        { type: 'separator' },
+        {
+          label: 'Add to Dictionary',
+          click: () => mainWindow.webContents.session.addWordToSpellCheckerDictionary(misspelledWord)
+        },
+        { type: 'separator' },
+        { role: 'cut' },
+        { role: 'copy' },
+        { role: 'paste' },
+        { type: 'separator' },
+        { role: 'selectAll' }
+      ]);
+      menu.popup();
+    } else if (selectionText || params.isEditable) {
+      // Regular context menu for editable fields
+      const menu = Menu.buildFromTemplate([
+        { role: 'cut', enabled: selectionText.length > 0 },
+        { role: 'copy', enabled: selectionText.length > 0 },
+        { role: 'paste' },
+        { type: 'separator' },
+        { role: 'selectAll' }
+      ]);
+      menu.popup();
+    }
   });
 
   // Open DevTools in development mode

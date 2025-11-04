@@ -10,7 +10,7 @@
     "build:win": "electron-builder --win",
     "build:mac": "electron-builder --mac",
     "build:linux": "electron-builder --linux",
-    "package": "electron-packager . TextEditorBlink --platform=win32 --arch=x64 --out=dist --overwrite",
+    "package": "electron-packager . TextEditorBlink --platform=win32 --arch=x64 --out=dist --overwrite --no-prune",
     "package:small": "electron-packager . TextEditorBlink --platform=win32 --arch=x64 --out=dist --overwrite --prune=true --ignore=node_modules/.cache",
     "cap:init": "cap init texteditor-blink com.texteditor.blink",
     "cap:add:ios": "cap add ios",
