@@ -31,7 +31,7 @@
             <aside id="sidebar" class="sidebar">
                 <div class="sidebar-header">
                     <div id="collectionControls" class="collection-controls">
-                        <input type="text" id="collectionTitle" placeholder="Collection Title" class="collection-input">
+                        <input type="text" id="collectionTitle" placeholder="Collection Title" class="collection-input" spellcheck="true" autocorrect="on" autocapitalize="words">
                         <button id="saveCollection" class="btn btn-primary">Save Collection</button>
                         <button id="newCollection" class="btn">New Collection</button>
                         <button id="loadCollection" class="btn">Load Collection</button>
@@ -66,7 +66,7 @@
             <!-- Editor Area -->
             <main class="editor-container">
                 <div class="editor-header">
-                    <input type="text" id="chapterTitle" placeholder="Chapter Title" class="chapter-title-input">
+                    <input type="text" id="chapterTitle" placeholder="Chapter Title" class="chapter-title-input" spellcheck="true" autocorrect="on" autocapitalize="words">
                     <div class="editor-controls">
                         <label for="textSize">Text Size:</label>
                         <input type="range" id="textSize" min="8" max="32" value="14">
@@ -76,7 +76,10 @@
                 
                 <textarea id="textEditor" 
                           placeholder="Start writing your story...&#10;&#10;In collection mode, you can organize your writing into chapters and save them as named collections.&#10;&#10;Use the sidebar to add chapters, switch between them, and manage your collections."
-                          class="text-editor"></textarea>
+                          class="text-editor"
+                          spellcheck="true"
+                          autocorrect="on"
+                          autocapitalize="sentences"></textarea>
                 
                 <div class="editor-footer">
                     <div class="stats">
