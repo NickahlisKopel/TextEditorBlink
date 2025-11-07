@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TextEditor Blink - Mobile</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#007acc">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="TextEditor Blink">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <button id="toggleSidebar" class="btn">☰</button>
+                <h1>TextEditor Blink</h1>
+            </div>
+            <div class="header-right">
+                <button id="collectionModeToggle" class="btn">📚 Collections</button>
+                <button id="darkModeToggle" class="btn">🌙</button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside id="sidebar" class="sidebar">
+                <div class="sidebar-header">
+                    <div id="collectionControls" class="collection-controls">
+                        <input type="text" id="collectionTitle" placeholder="Collection Title" class="collection-input" spellcheck="true" autocorrect="on" autocapitalize="words">
+                        <button id="saveCollection" class="btn btn-primary">Save Collection</button>
+                        <button id="newCollection" class="btn">New Collection</button>
+                        <button id="loadCollection" class="btn">Load Collection</button>
+                        <button id="exportCollection" class="btn">Export Collection</button>
+                    </div>
+                    
+                    <div id="singleFileControls" class="single-file-controls" style="display: none;">
+                        <button id="newFile" class="btn">New File</button>
+                        <button id="saveFile" class="btn btn-primary">Save File</button>
+                        <button id="loadFile" class="btn">Load File</button>
+                    </div>
+                </div>
+
+                <div class="chapters-section">
+                    <div class="chapters-header">
+                        <h3>Chapters</h3>
+                        <button id="addChapter" class="btn btn-small">+ Add Chapter</button>
+                    </div>
+                    <div id="chaptersList" class="chapters-list">
+                        <!-- Chapters will be added here dynamically -->
+                    </div>
+                </div>
+
+                <div class="collections-section">
+                    <h3>Saved Collections</h3>
+                    <div id="savedCollections" class="saved-collections">
+                        <!-- Saved collections will be listed here -->
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Editor Area -->
+            <main class="editor-container">
+                <div class="editor-header">
+                    <input type="text" id="chapterTitle" placeholder="Chapter Title" class="chapter-title-input" spellcheck="true" autocorrect="on" autocapitalize="words">
+                    <div class="editor-controls">
+                        <label for="textSize">Text Size:</label>
+                        <input type="range" id="textSize" min="8" max="32" value="14">
+                        <span id="textSizeValue">14px</span>
+                    </div>
+                </div>
+                
+                <textarea id="textEditor" 
+                          placeholder="Start writing your story...&#10;&#10;In collection mode, you can organize your writing into chapters and save them as named collections.&#10;&#10;Use the sidebar to add chapters, switch between them, and manage your collections."
+                          class="text-editor"
+                          spellcheck="true"
+                          autocorrect="on"
+                          autocapitalize="sentences"></textarea>
+                
+                <div class="editor-footer">
+                    <div class="stats">
+                        <span id="wordCount">Words: 0</span>
+                        <span id="charCount">Characters: 0</span>
+                    </div>
+                    <div class="auto-save-indicator">
+                        <span id="autoSaveStatus">Auto-saved</span>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="mobile-renderer.js"></script>
+</body>
+</html>
