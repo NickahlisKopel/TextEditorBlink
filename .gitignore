@@ -6,6 +6,7 @@ yarn-error.log*
 
 # Build outputs
 builds/
+builds_new/
 dist/
 build/
 out/

@@ -10,8 +10,9 @@
     "build:win": "electron-builder --win",
     "build:mac": "electron-builder --mac",
     "build:linux": "electron-builder --linux",
-    "package": "electron-packager . TextEditorBlink --platform=win32 --arch=x64 --out=builds --overwrite --no-prune",
-    "package:small": "electron-packager . TextEditorBlink --platform=win32 --arch=x64 --out=builds --overwrite --prune=true --ignore=node_modules/.cache",
+  "clean:build": "powershell -NoLogo -NoProfile -Command \"Remove-Item -Path 'builds/TextEditorBlink-win32-x64' -Recurse -Force -ErrorAction SilentlyContinue; exit 0\"",
+  "package": "npm run clean:build && electron-packager . TextEditorBlink --platform=win32 --arch=x64 --out=builds --overwrite --no-prune --ignore=\"/(^|/)(builds|dist|out|android|ios|TextEditorBlink-v1\\.0\\.0-win64|\\.git|\\.github|netlify|_redirects|vercel\\.json|MOBILE_DEPLOYMENT\\.md|WEB_HOSTING_GUIDE\\.md)(/|$)/\"",
+  "package:small": "npm run clean:build && electron-packager . TextEditorBlink --platform=win32 --arch=x64 --out=builds --overwrite --prune=true --ignore=node_modules/.cache --ignore=\"/(^|/)(builds|dist|out|android|ios|TextEditorBlink-v1\\.0\\.0-win64|\\.git|\\.github|netlify|_redirects|vercel\\.json|MOBILE_DEPLOYMENT\\.md|WEB_HOSTING_GUIDE\\.md)(/|$)/\"",
     "cap:init": "cap init texteditor-blink com.texteditor.blink",
     "cap:add:ios": "cap add ios",
     "cap:add:android": "cap add android",
@@ -26,7 +27,8 @@
     "web:serve": "python -m http.server 8080 --directory mobile",
     "web:deploy:netlify": "netlify deploy --prod --dir=mobile",
     "web:deploy:vercel": "vercel --prod mobile",
-    "web:deploy:firebase": "firebase deploy"
+    "web:deploy:firebase": "firebase deploy",
+    "package:fresh": "electron-packager . TextEditorBlink --platform=win32 --arch=x64 --out=builds_new --overwrite --no-prune --ignore=\"/(^|/)(builds|builds_new|dist|out|android|ios|TextEditorBlink-v1\\.0\\.0-win64|\\.git|\\.github|netlify|_redirects|vercel\\.json|MOBILE_DEPLOYMENT\\.md|WEB_HOSTING_GUIDE\\.md)(/|$)/\""
   },
   "keywords": [
     "text-editor",
