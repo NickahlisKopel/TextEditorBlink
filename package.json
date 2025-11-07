@@ -10,8 +10,8 @@
     "build:win": "electron-builder --win",
     "build:mac": "electron-builder --mac",
     "build:linux": "electron-builder --linux",
-    "package": "electron-packager . TextEditorBlink --platform=win32 --arch=x64 --out=dist --overwrite --no-prune",
-    "package:small": "electron-packager . TextEditorBlink --platform=win32 --arch=x64 --out=dist --overwrite --prune=true --ignore=node_modules/.cache",
+    "package": "electron-packager . TextEditorBlink --platform=win32 --arch=x64 --out=builds --overwrite --no-prune",
+    "package:small": "electron-packager . TextEditorBlink --platform=win32 --arch=x64 --out=builds --overwrite --prune=true --ignore=node_modules/.cache",
     "cap:init": "cap init texteditor-blink com.texteditor.blink",
     "cap:add:ios": "cap add ios",
     "cap:add:android": "cap add android",
@@ -45,7 +45,11 @@
     "@capacitor/android": "^6.2.1",
     "@capacitor/core": "^6.2.1",
     "@capacitor/ios": "^6.2.1",
-    "astral-regex": "^2.0.0"
+    "astral-regex": "^2.0.0",
+    "dictionary-en": "*",
+    "nspell": "*",
+    "string-similarity": "^4.0.4",
+    "word-list": "^4.1.0"
   },
   "build": {
     "appId": "com.texteditor.blink",

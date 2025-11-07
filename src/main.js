@@ -1,8 +1,11 @@
 const { app, BrowserWindow, Menu, dialog, ipcMain } = require('electron');
 const path = require('path');
 const fs = require('fs');
+const stringSimilarity = require('string-similarity');
 
 let mainWindow;
+let userDictionaryPath = null;
+let englishWords = null;
 
 function createWindow() {
   // Create the browser window
@@ -32,19 +35,50 @@ function createWindow() {
 
   // Enable spell checker context menu
   mainWindow.webContents.on('context-menu', (event, params) => {
-    const { selectionText, misspelledWord, dictionarySuggestions } = params;
-    
+    const { selectionText, misspelledWord, dictionarySuggestions = [] } = params;
+
     if (misspelledWord) {
+      // Get better suggestions using fuzzy match against an English word list
+      let better = [];
+      try {
+        if (englishWords && englishWords.length) {
+          const lower = String(misspelledWord).toLowerCase();
+          const len = lower.length;
+          // Pre-filter to words of similar length and same starting letter to keep it fast
+          const subset = englishWords.filter(w => {
+            const wl = w.length;
+            if (wl < 2) return false;
+            if (Math.abs(wl - len) > 3) return false;
+            if (w[0].toLowerCase() !== lower[0]) return false;
+            return true;
+          }).slice(0, 8000);
+
+          if (subset.length) {
+            const result = stringSimilarity.findBestMatch(misspelledWord, subset);
+            better = result.ratings
+              .sort((a, b) => b.rating - a.rating)
+              .slice(0, 7)
+              .map(r => r.target);
+          }
+        }
+      } catch (_) {}
+
+      // Merge and de-duplicate suggestions, prefer our list first
+      const merged = Array.from(new Set([...(better || []), ...dictionarySuggestions]))
+        .filter(s => s && s.toLowerCase() !== (misspelledWord || '').toLowerCase())
+        .slice(0, 7);
+
       const menu = Menu.buildFromTemplate([
-        // Add spelling suggestions
-        ...dictionarySuggestions.slice(0, 5).map(suggestion => ({
+        // Suggestion entries
+        ...(merged.length ? merged : ["No suggestions"]).map(suggestion => ({
           label: suggestion,
+          enabled: suggestion !== "No suggestions",
           click: () => mainWindow.webContents.replaceMisspelling(suggestion)
         })),
         { type: 'separator' },
         {
           label: 'Add to Dictionary',
-          click: () => mainWindow.webContents.session.addWordToSpellCheckerDictionary(misspelledWord)
+          click: () => addWordToUserDictionary(misspelledWord)
         },
         { type: 'separator' },
         { role: 'cut' },
@@ -57,8 +91,8 @@ function createWindow() {
     } else if (selectionText || params.isEditable) {
       // Regular context menu for editable fields
       const menu = Menu.buildFromTemplate([
-        { role: 'cut', enabled: selectionText.length > 0 },
-        { role: 'copy', enabled: selectionText.length > 0 },
+        { role: 'cut', enabled: selectionText && selectionText.length > 0 },
+        { role: 'copy', enabled: selectionText && selectionText.length > 0 },
         { role: 'paste' },
         { type: 'separator' },
         { role: 'selectAll' }
@@ -309,6 +343,13 @@ ipcMain.handle('open-collection', async (event) => {
 
 // App event handlers
 app.whenReady().then(() => {
+  // Prepare user dictionary path and load spell resources
+  try {
+    userDictionaryPath = path.join(app.getPath('userData'), 'user-dictionary.txt');
+  } catch (_) {}
+
+  loadWordList();
+
   createWindow();
 
   app.on('activate', () => {
@@ -317,6 +358,36 @@ app.whenReady().then(() => {
     }
   });
 });
+
+async function loadWordList() {
+  try {
+    // word-list is an async module that resolves to a file path
+    const wordList = await import('word-list');
+    const wordListPath = wordList.default;
+    const data = fs.readFileSync(wordListPath, 'utf8');
+    // Keep a reasonably sized list in memory
+    englishWords = data.split(/\r?\n/).filter(Boolean);
+    console.log(`Loaded ${englishWords.length} words for spell checking`);
+  } catch (e) {
+    console.warn('Could not load word list:', e.message);
+  }
+}
+
+function addWordToUserDictionary(word) {
+  if (!word || !word.trim()) return;
+  try {
+    // Add to Electron spell checker session
+    try { mainWindow?.webContents?.session?.addWordToSpellCheckerDictionary(word); } catch (_) {}
+
+    // Persist to user dictionary file
+    if (userDictionaryPath) {
+      const exists = fs.existsSync(userDictionaryPath);
+      fs.appendFileSync(userDictionaryPath, (exists ? '\n' : '') + word.trim(), 'utf8');
+    }
+  } catch (e) {
+    console.warn('Failed to persist user dictionary word:', e.message);
+  }
+}
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
